@@ -22,13 +22,13 @@ static bool validate_args(int argc, char **argv)
 	int len;
 	if (argc != 2)
 	{
-		fprintf(stderr, "Error: usage %s <scene.rt>\n", argv[0]);
+		ft_print_error("Error: usage ./miniRT <scene.rt>\n");
 		return (false);
 	}
 	len = ft_strlen(argv[1]);
 	if (len < 4 || ft_strncmp(argv[1] + len - 3, ".rt", 3) != 0)
 	{
-		fprintf(stderr, "Error: file must have .rt extension\n");
+		ft_print_error("Error: file must have .rt extension\n");
 		return (false);
 	}
 	return (true);
@@ -63,7 +63,7 @@ int	main(int argc, char **argv)
 	minirt.scene = scene_init();
 	if (!parse_scene(argv[1], &minirt.scene))
 	{
-		fprintf(stderr, "Failed to parse scene file: %s\n", argv[1]);
+		ft_print_error("Failed to parse scene file");
 		destroy_scene(&minirt.scene);
 		return (1);
 	}
@@ -72,7 +72,6 @@ int	main(int argc, char **argv)
 		destroy_scene(&minirt.scene);
 		return (1);
 	}
-	srand(time(NULL));
 	draw(&minirt);
 	if (mlx_image_to_window(minirt.mlx.mlx_ptr,	minirt.mlx.img_ptr, 0, 0) == -1)
 		return (ft_errorimg(minirt.mlx.mlx_ptr, minirt.mlx.img_ptr));

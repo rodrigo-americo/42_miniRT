@@ -47,6 +47,20 @@ static bool	in_shadow(t_scene *scene, t_vec3 to_light,
 	return (false);
 }
 
+static t_color	calculate_final_color(t_scene *scene, t_hit_record *rec)
+{
+	t_color	final_color;
+
+	final_color.r = (uint8_t)fmin(255, rec->color.r
+			* scene->ambient.intensity * scene->ambient.color.r / 255.0);
+	final_color.g = (uint8_t)fmin(255, rec->color.g
+			* scene->ambient.intensity * scene->ambient.color.g / 255.0);
+	final_color.b = (uint8_t)fmin(255, rec->color.b
+			* scene->ambient.intensity * scene->ambient.color.b / 255.0);
+	final_color.a = 255;
+	return (final_color);
+}
+
 t_color	calculate_lighting(t_scene *scene, t_hit_record *rec)
 {
 	t_color	final_color;
@@ -55,9 +69,7 @@ t_color	calculate_lighting(t_scene *scene, t_hit_record *rec)
 	t_vec3	to_light;
 	double	diffuse;
 
-	// adicionando contribuição da cor ambiente
-	final_color = color_add(color_scale(rec->color, scene->ambient.intensity),
-			scene->ambient.color);
+	final_color = calculate_final_color(scene, rec);
 	current_light = scene->lights;
 	while (current_light)
 	{

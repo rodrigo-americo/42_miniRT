@@ -34,7 +34,7 @@ int	ft_errorinit(mlx_t *mlx)
 {
 	if (mlx)
 		mlx_terminate(mlx);
-	printf("%s", mlx_strerror(mlx_errno));
+	ft_print_error(mlx_strerror(mlx_errno));
 	return (1);
 }
 

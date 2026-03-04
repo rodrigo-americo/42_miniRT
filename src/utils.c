@@ -21,3 +21,15 @@ void	ft_free_split(char **split)
 		free(split[i++]);
 	free(split);
 }
+
+void	ft_print_error(const char *msg)
+{
+	int	i;
+
+	i = 0;
+	while (msg[i])
+	{
+		write(1, &msg[i], 1);
+		i++;
+	}
+}
