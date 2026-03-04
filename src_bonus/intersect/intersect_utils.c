@@ -34,3 +34,29 @@ double	hit_cap(t_ray *r, t_vec3 cap_center, t_vec3 axis, double radius)
 		return (-1);
 	return (t);
 }
+
+t_color	get_object_color(t_object *obj)
+{
+	if (obj->type == SPHERE)
+		return (obj->shape.sphere.color);
+	if (obj->type == PLANE)
+		return (obj->shape.plane.color);
+	if (obj->type == CYLINDER)
+		return (obj->shape.cylinder.color);
+	if (obj->type == CONE)
+		return (obj->shape.cone.color);
+	error_exit("get_object_color: unknown object type");
+	return ((t_color){0, 0, 0, 255});
+}
+
+t_color	pick_checker(double u, double v, t_object *obj)
+{
+	int	check;
+
+	check = ((int)floor(u) + (int)floor(v)) % 2;
+	if (check < 0)
+		check += 2;
+	if (check == 0)
+		return (get_object_color(obj));
+	return (obj->color2);
+}

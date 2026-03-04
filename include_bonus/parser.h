@@ -18,7 +18,8 @@
 
 typedef struct s_parse_context	t_parse_context;
 
-typedef bool (*t_parse_function)(t_parse_context *ctx, t_scene *scene, const char *line);
+typedef bool					(*t_parse_function)(t_parse_context *ctx,
+				t_scene *scene,const char *line);
 
 typedef struct s_light_data
 {
@@ -27,7 +28,6 @@ typedef struct s_light_data
 	t_color		color;
 }	t_light_data;
 
-// Para câmera
 typedef struct s_camera_data
 {
 	t_point3	position;
@@ -35,7 +35,6 @@ typedef struct s_camera_data
 	double		fov;
 }	t_camera_data;
 
-// Para esfera
 typedef struct s_sphere_data
 {
 	t_point3	center;
@@ -43,7 +42,6 @@ typedef struct s_sphere_data
 	t_color		color;
 }	t_sphere_data;
 
-// Para plano
 typedef struct s_plane_data
 {
 	t_point3	point;
@@ -51,7 +49,6 @@ typedef struct s_plane_data
 	t_color		color;
 }	t_plane_data;
 
-// Para cilindro
 typedef struct s_cylinder_data
 {
 	t_point3	center;
@@ -69,7 +66,7 @@ typedef struct s_cone_data
 	double		height;
 	double		half_angle;
 	t_color		color;
-}t_cone_data;
+}	t_cone_data;
 
 typedef struct s_element_parser
 {
@@ -86,17 +83,22 @@ struct s_parse_context
 	const char	*filename;
 	bool		error_occurred;
 };
-
+bool		parse_scene(const char *filename, t_scene *scene);
 bool		valid_obj_token_count(size_t count, int base);
 bool		validate_and_normalize_axis(t_vec3 *axis, t_parse_context *ctx,
 										char **tokens);
-bool		parse_scene(const char *filename, t_scene *scene);
-bool		parse_ambient(t_parse_context *ctx, t_scene *scene, const char *line);
-bool		parse_camera(t_parse_context *ctx, t_scene *scene, const char *line);
-bool		parse_light(t_parse_context *ctx, t_scene *scene, const char *line);
-bool		parse_sphere(t_parse_context *ctx, t_scene *scene, const char *line);
-bool		parse_plane(t_parse_context *ctx, t_scene *scene, const char *line);
-bool		parse_cylinder(t_parse_context *ctx, t_scene *scene, const char *line);
+bool		parse_ambient(t_parse_context *ctx, t_scene *scene,
+				const char *line);
+bool		parse_camera(t_parse_context *ctx, t_scene *scene,
+				const char *line);
+bool		parse_light(t_parse_context *ctx, t_scene *scene,
+				const char *line);
+bool		parse_sphere(t_parse_context *ctx, t_scene *scene,
+				const char *line);
+bool		parse_plane(t_parse_context *ctx, t_scene *scene,
+				const char *line);
+bool		parse_cylinder(t_parse_context *ctx, t_scene *scene,
+				const char *line);
 bool		parse_cone(t_parse_context *ctx, t_scene *scene, const char *line);
 bool		parse_vector(const char *str, t_vec3 *vec);
 bool		parse_color(const char *str, t_color *color);
@@ -113,61 +115,10 @@ bool		ft_isempty_or_comment(const char *line);
 char		*extract_identifier(const char *line);
 bool		process_line(t_parse_context *context, t_scene *scene,
 				const char *line);
-void		print_parse_error(const char *filename, int line_num, 
+void		print_parse_error(const char *filename, int line_num,
 				const char *message);
 void		ft_error_and_free(t_parse_context *ctx, char **tokens,
 				const char *message);
-/*
-** ===========================================================================
-**                          TABELA DE LOOKUP
-** ===========================================================================
-**
-** A tabela de lookup é declarada como extern aqui porque ela é definida
-** em parser.c. Outros arquivos do módulo de parsing podem referenciá-la
-** através deste header.
-**
-** A tabela é um array de t_element_parser terminado por uma entrada com
-** identifier NULL (sentinela). Isso permite iterar pela tabela sem saber
-** o tamanho em tempo de compilação.
-**
-** ESTRUTURA DA TABELA (em parser.c):
-**
-**     const t_element_parser g_element_parsers[] = {
-**         {"A", parse_ambient},
-**         {"C", parse_camera},
-**         {"L", parse_light},
-**         {"sp", parse_sphere},
-**         {"pl", parse_plane},
-**         {"cy", parse_cylinder},
-**         {"cn", parse_cone},
-**         {NULL, NULL}  // Sentinela marca o fim
-**     };
-**
-** COMO USAR:
-** Itere pela tabela até encontrar identifier NULL. Para cada entrada,
-** compare o identifier com a string que você extraiu da linha. Se bater,
-** chame a parse_func associada.
-**
-** EXEMPLO DE BUSCA:
-**     int i = 0;
-**     while (g_element_parsers[i].identifier != NULL)
-**     {
-**         if (strcmp(g_element_parsers[i].identifier, id) == 0)
-**         {
-**             // Encontrou! Chama a função
-**             return g_element_parsers[i].parse_func(line, scene, line_num);
-**         }
-**         i++;
-**     }
-**     // Não encontrou - identificador inválido
-**
-** VANTAGENS DESTA ABORDAGEM:
-** - Para adicionar novo tipo: adicione uma linha na tabela
-** - Não precisa modificar lógica de busca
-** - Fácil de desabilitar temporariamente um tipo (comente a linha)
-** - Código de busca é genérico e não muda nunca
-*/
-
 extern const t_element_parser	g_element_parsers[];
 
 #endif

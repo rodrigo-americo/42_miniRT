@@ -12,6 +12,7 @@
 
 #include "miniRt.h"
 #include "parser.h"
+#include "color.h"
 
 static t_object	*create_object(t_object_type type, char **tokens, int nargs)
 {
@@ -22,6 +23,7 @@ static t_object	*create_object(t_object_type type, char **tokens, int nargs)
 		return (NULL);
 	obj->type = type;
 	obj->next = NULL;
+	init_object_defaults(obj);
 	if (!set_extra_args(obj, tokens, nargs))
 	{
 		free(obj);
@@ -59,7 +61,6 @@ t_object	*create_cylinder_obj(t_cylinder cylinder, char **tokens)
 		obj->shape.cylinder = cylinder;
 	return (obj);
 }
-
 
 t_object	*create_cone_obj(t_cone cone, char **tokens)
 {

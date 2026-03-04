@@ -13,7 +13,7 @@
 #ifndef MLX_RT_H
 # define MLX_RT_H
 
-#include "miniRt.h"
+# include "miniRt.h"
 
 // src/draw/draw.c
 int		draw(t_minirt *minirt);

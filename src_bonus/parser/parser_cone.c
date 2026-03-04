@@ -63,7 +63,7 @@ static bool	validate_cone(char **tokens, t_parse_context *ctx,
 
 static t_cone	create_cone_data(t_cone_data *data)
 {
-	t_cone cn;
+	t_cone	cn;
 
 	cn.apex = data->apex;
 	cn.axis = data->axis;

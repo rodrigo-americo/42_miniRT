@@ -26,34 +26,41 @@ t_scene	scene_init(void)
 	return (scene);
 }
 
+static void	destroy_objects(t_object *obj)
+{
+	t_object	*next;
+
+	while (obj)
+	{
+		next = obj->next;
+		if (obj->bump_map)
+		{
+			free(obj->bump_map->data);
+			free(obj->bump_map);
+		}
+		free(obj);
+		obj = next;
+	}
+}
+
+static void	destroy_lights(t_light *light)
+{
+	t_light	*next;
+
+	while (light)
+	{
+		next = light->next;
+		free(light);
+		light = next;
+	}
+}
+
 void	destroy_scene(t_scene *scene)
 {
-	t_light		*current_light;
-	t_object	*current_obj;
-	t_light		*next_light;
-	t_object	*next_obj;
-
 	if (!scene)
 		return ;
-	current_light = scene->lights;
-	while (current_light)
-	{
-		next_light = current_light->next;
-		free(current_light);
-		current_light = next_light;
-	}
-	current_obj = scene->objects;
-	while (current_obj)
-	{
-		next_obj = current_obj->next;
-		if (current_obj->bump_map)
-		{
-			free(current_obj->bump_map->data);
-			free(current_obj->bump_map);
-		}
-		free(current_obj);
-		current_obj = next_obj;
-	}
+	destroy_lights(scene->lights);
+	destroy_objects(scene->objects);
 }
 
 void	add_object_to_scene(t_scene *scene, t_object *obj)

@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <time.h>
 
-static bool validate_args(int argc, char **argv)
+static bool	validate_args(int argc, char **argv)
 {
-	int len;
+	int	len;
+
 	if (argc != 2)
 	{
 		ft_print_error("Error: usage ./miniRT <scene.rt>\n");
@@ -73,7 +74,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	draw(&minirt);
-	if (mlx_image_to_window(minirt.mlx.mlx_ptr,	minirt.mlx.img_ptr, 0, 0) == -1)
+	if (mlx_image_to_window(minirt.mlx.mlx_ptr, minirt.mlx.img_ptr, 0, 0) == -1)
 		return (ft_errorimg(minirt.mlx.mlx_ptr, minirt.mlx.img_ptr));
 	helper_events(&minirt);
 	mlx_loop(minirt.mlx.mlx_ptr);

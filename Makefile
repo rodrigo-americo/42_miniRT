@@ -65,6 +65,8 @@ SRCS_BONUS        := src_bonus/main.c \
 					 src_bonus/scene/scene.c \
 					 src_bonus/scene/object_utils.c \
 					 src_bonus/scene/object_extra_args.c \
+					 src_bonus/scene/object_bump.c \
+					 src_bonus/scene/object_defaults.c \
 					 src_bonus/parser/parser_ambient.c \
 					 src_bonus/parser/parser_camera.c \
 					 src_bonus/parser/parser_camera_utils.c \
@@ -76,12 +78,14 @@ SRCS_BONUS        := src_bonus/main.c \
 					 src_bonus/parser/parser_error.c \
 					 src_bonus/parser/parser.c \
 					 src_bonus/parser/parser_utils.c \
+					 src_bonus/parser/parser_utils1.c \
 					 src_bonus/vectors/vec_basic.c \
 					 src_bonus/vectors/vec_advanced.c \
 					 src_bonus/draw/draw.c \
 					 src_bonus/draw/draw_utils.c \
 					 src_bonus/intersect/hit_sphere.c \
 					 src_bonus/intersect/bump_mapping.c \
+					 src_bonus/intersect/bump_shapes.c \
 					 src_bonus/intersect/checkerboard.c \
 					 src_bonus/intersect/hit_cone.c \
 					 src_bonus/intersect/hit_plane.c \
@@ -90,6 +94,7 @@ SRCS_BONUS        := src_bonus/main.c \
 					 src_bonus/intersect/hit_record.c \
 					 src_bonus/intersect/intersect_utils.c \
 					 src_bonus/lighting/lighting.c \
+					 src_bonus/lighting/lighting_reflect.c \
 					 src_bonus/color/color_convert.c \
 					 src_bonus/color/color_operations.c \
 					 src_bonus/ray/ray_utils.c

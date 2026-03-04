@@ -19,19 +19,17 @@ static double	calc_sphere(t_vec3 *center, double radius, t_ray *r)
 	double	a;
 	double	h;
 	double	c;
-	double	discriminant;
 	double	t;
 
 	oc = vec3_subtract(*center, r->origin);
 	a = vec3_dot(r->direction, r->direction);
 	h = vec3_dot(r->direction, oc);
 	c = vec3_dot(oc, oc) - radius * radius;
-	discriminant = h * h - a * c;
-	if (discriminant < 0)
+	if (h * h - a * c < 0)
 		return (-1.0);
-	t = (h - sqrt(discriminant)) / a;
+	t = (h - sqrt(h * h - a * c)) / a;
 	if (t < 0)
-		t = (h + sqrt(discriminant)) / a;
+		t = (h + sqrt(h * h - a * c)) / a;
 	return (t);
 }
 

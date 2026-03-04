@@ -50,7 +50,7 @@
 # define REFLECTION_DEPTH 5
 # define CHECKER_SCALE_DEFAULT 1.0
 # define CHECKER_COLOR2_DEFAULT 0x000000FF
-# define BUMP_SCALE_DEFAULT 0.0
+# define BUMP_SCALE_DEFAULT 1.0
 /*
 ** Definições de tamanho da janela e precisão numérica
 ** Estas constantes controlam aspectos fundamentais da renderização
@@ -264,6 +264,7 @@ t_ray		ray_create(t_point3 origin, t_vec3 direction);
 void		render_scene(t_minirt *rt);
 t_color		calculate_lighting(t_scene *scene, t_hit_record *rec, t_ray *r, int depth);
 void		ft_free_split(char **split);
+void		ft_print_error(const char *msg);
 void		error_exit(const char *message);
 void		ft_on_close(void *param);
 void		ft_on_keypress(mlx_key_data_t keydata, void *param);

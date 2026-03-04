@@ -35,34 +35,39 @@ static t_ray	pixel_ray(t_camera *cam, double x, double y, t_scene *scene)
 	return (ray_create(cam->position, dir));
 }
 
-t_color	pixel_color_aa(t_minirt *minirt, int x, int y)
+static t_vec3	calc_aa_sample(t_minirt *minirt, int x, int y)
 {
-	double	r_sum;
-	double	g_sum;
-	double	b_sum;
 	t_ray	ray;
 	t_color	sample_color;
+	t_vec3	sum;
 	int		i;
 
-	r_sum = 0.0;
-	g_sum = 0.0;
-	b_sum = 0.0;
+	sum = (t_vec3){0, 0, 0};
 	i = 0;
 	while (i < SAMPLES_PER_PIXEL)
 	{
 		ray = pixel_ray(&minirt->scene.camera,
-			x + random_double(),
-			y + random_double(),
-			&minirt->scene);
+				x + random_double(),
+				y + random_double(),
+				&minirt->scene);
 		sample_color = ray_color(&ray, &minirt->scene);
-		r_sum += sample_color.r;
-		g_sum += sample_color.g;
-		b_sum += sample_color.b;
+		sum.x += sample_color.r;
+		sum.y += sample_color.g;
+		sum.z += sample_color.b;
 		i++;
 	}
-	sample_color.r = (uint8_t)(r_sum / SAMPLES_PER_PIXEL);
-	sample_color.g = (uint8_t)(g_sum / SAMPLES_PER_PIXEL);
-	sample_color.b = (uint8_t)(b_sum / SAMPLES_PER_PIXEL);
-	sample_color.a = 255;
-	return (sample_color);
+	return (sum);
+}
+
+t_color	pixel_color_aa(t_minirt *minirt, int x, int y)
+{
+	t_vec3	sum;
+	t_color	result;
+
+	sum = calc_aa_sample(minirt, x, y);
+	result.r = (uint8_t)(sum.x / SAMPLES_PER_PIXEL);
+	result.g = (uint8_t)(sum.y / SAMPLES_PER_PIXEL);
+	result.b = (uint8_t)(sum.z / SAMPLES_PER_PIXEL);
+	result.a = 255;
+	return (result);
 }

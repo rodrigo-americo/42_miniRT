@@ -46,7 +46,7 @@ t_vec3	vec3_normalize(t_vec3 v)
 	return (result);
 }
 
-t_vec3 vec3_negate(t_vec3 v)
+t_vec3	vec3_negate(t_vec3 v)
 {
 	return (vec3_multiply(v, -1.0));
 }

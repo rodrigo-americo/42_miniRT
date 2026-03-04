@@ -78,20 +78,6 @@ static t_vec3	cylinder_normal(t_vec3 hit_point, t_object *obj,
 	}
 }
 
-t_color	get_object_color(t_object *obj)
-{
-	if (obj->type == SPHERE)
-		return (obj->shape.sphere.color);
-	if (obj->type == PLANE)
-		return (obj->shape.plane.color);
-	if (obj->type == CYLINDER)
-		return (obj->shape.cylinder.color);
-	if (obj->type == CONE)
-		return (obj->shape.cone.color);
-	error_exit("get_object_color: unknown object type");
-	return ((t_color){0, 0, 0, 255});
-}
-
 void	fill_hit_record(t_hit_record *rec, t_ray *r, t_object *obj, double t)
 {
 	rec->object = obj;

@@ -23,19 +23,6 @@ const t_element_parser	g_element_parsers[] = {
 {NULL, NULL}
 };
 
-static t_parse_context	ft_init_parse_context(const char *filename)
-{
-	t_parse_context	context;
-
-	context.camera_count = 0;
-	context.ambient_count = 0;
-	context.light_count = 0;
-	context.current_line = 0;
-	context.filename = filename;
-	context.error_occurred = false;
-	return (context);
-}
-
 static bool	validate_scene_counts(t_parse_context *ctx)
 {
 	if (ctx->camera_count != 1)
@@ -59,64 +46,75 @@ static bool	validate_scene_counts(t_parse_context *ctx)
 	return (true);
 }
 
-bool	process_line(t_parse_context *context, t_scene *scene, const char *line)
+static bool	dispatch_parser(t_parse_context *ctx, t_scene *scene,
+				const char *line, char *id)
 {
-	int		i;
-	char	*identifier;
+	int	i;
 
-	if (ft_isempty_or_comment(line))
-		return (true);
 	i = 0;
-	identifier = extract_identifier(line);
 	while (g_element_parsers[i].identifier)
 	{
-		if (ft_strcmp(identifier, g_element_parsers[i].identifier) == 0)
+		if (ft_strcmp(id, g_element_parsers[i].identifier) == 0)
 		{
-			if (!g_element_parsers[i].parser(context, scene, line))
-			{
-				context->error_occurred = true;
-				free(identifier);
-				return (false);
-			}
-			free(identifier);
-			return (true);
+			if (!g_element_parsers[i].parser(ctx, scene, line))
+				ctx->error_occurred = true;
+			return (!ctx->error_occurred);
 		}
 		i++;
 	}
-	print_parse_error(context->filename, context->current_line, identifier);
-	context->error_occurred = true;
-	free(identifier);
+	print_parse_error(ctx->filename, ctx->current_line, id);
+	ctx->error_occurred = true;
 	return (false);
 }
 
-bool	parse_scene(const char *filename, t_scene *scene)
+static void	read_scene_file(t_parse_context *ctx, t_scene *scene, int fd)
 {
-	char			*file_content;
-	char			*trimmed_line;
-	t_parse_context	parse_context;
-	int				fd;
+	char	*file_content;
+	char	*trimmed_line;
 
-	parse_context = ft_init_parse_context(filename);
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (false);
 	file_content = get_next_line(fd);
 	while (file_content)
 	{
-		parse_context.current_line++;
+		ctx->current_line++;
 		trimmed_line = ft_strtrim(file_content, "\n\r");
-		if (!process_line(&parse_context, scene, trimmed_line))
+		if (!process_line(ctx, scene, trimmed_line))
 		{
-			free(file_content);
 			free(trimmed_line);
-			break ;
+			free(file_content);
+			return ;
 		}
 		free(trimmed_line);
 		free(file_content);
 		file_content = get_next_line(fd);
 	}
-	close(fd);
-	if (parse_context.error_occurred)
+}
+
+bool	process_line(t_parse_context *context, t_scene *scene, const char *line)
+{
+	char	*identifier;
+	bool	result;
+
+	if (ft_isempty_or_comment(line))
+		return (true);
+	identifier = extract_identifier(line);
+	result = dispatch_parser(context, scene, line, identifier);
+	free(identifier);
+	return (result);
+}
+
+bool	parse_scene(const char *filename, t_scene *scene)
+{
+	t_parse_context	ctx;
+	int				fd;
+
+	ctx = (t_parse_context){0};
+	ctx.filename = filename;
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 		return (false);
-	return (validate_scene_counts(&parse_context));
+	read_scene_file(&ctx, scene, fd);
+	close(fd);
+	if (ctx.error_occurred)
+		return (false);
+	return (validate_scene_counts(&ctx));
 }

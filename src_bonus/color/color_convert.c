@@ -35,6 +35,5 @@ uint32_t	color_to_int32(t_color color)
 	g = (uint8_t)fmin(255.0, fmax(0.0, color.g));
 	b = (uint8_t)fmin(255.0, fmax(0.0, color.b));
 	a = 255;
-	
 	return ((r << 24) | (g << 16) | (b << 8) | a);
 }

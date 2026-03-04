@@ -13,7 +13,8 @@
 #include "miniRt.h"
 #include "intersect.h"
 
-static int	is_valid_cylinder_hit(t_ray *r, t_object *obj, t_quadratic_equation values)
+static int	is_valid_cylinder_hit(t_ray *r, t_object *obj,
+				t_quadratic_equation values)
 {
 	t_vec3	hit_point;
 	double	projection;

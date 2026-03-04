@@ -13,18 +13,6 @@
 #include "miniRt.h"
 #include "intersect.h"
 
-static t_color	pick_checker(double u, double v, t_object *obj)
-{
-	int	check;
-
-	check = ((int)floor(u) + (int)floor(v)) % 2;
-	if (check < 0)
-		check += 2;
-	if (check == 0)
-		return (get_object_color(obj));
-	return (obj->color2);
-}
-
 static t_color	checker_sphere(t_vec3 point, t_object *obj)
 {
 	t_vec3	local;
@@ -46,7 +34,6 @@ static t_color	checker_plane(t_vec3 point, t_object *obj)
 	t_vec3	bitangent;
 	double	u;
 	double	v;
-	double	s;
 
 	n = obj->shape.plane.normal;
 	if (fabs(n.x) < 0.9)
@@ -54,9 +41,8 @@ static t_color	checker_plane(t_vec3 point, t_object *obj)
 	else
 		tangent = vec3_normalize(vec3_cross(n, (t_vec3){0, 1, 0}));
 	bitangent = vec3_cross(n, tangent);
-	s = obj->checker_scale;
-	u = vec3_dot(point, tangent) * s;
-	v = vec3_dot(point, bitangent) * s;
+	u = vec3_dot(point, tangent) * obj->checker_scale;
+	v = vec3_dot(point, bitangent) * obj->checker_scale;
 	return (pick_checker(u, v, obj));
 }
 
@@ -85,15 +71,13 @@ static t_color	checker_cone(t_vec3 point, t_object *obj)
 	double	h;
 	double	u;
 	double	v;
-	double	s;
 
 	apex_to_hit = vec3_subtract(point, obj->shape.cone.apex);
 	h = vec3_dot(apex_to_hit, obj->shape.cone.axis);
 	radial = vec3_normalize(vec3_subtract(apex_to_hit,
 				vec3_multiply(obj->shape.cone.axis, h)));
-	s = obj->checker_scale;
-	u = (atan2(radial.z, radial.x) / (2.0 * PI) + 0.5) * s;
-	v = h / obj->shape.cone.height * s;
+	u = (atan2(radial.z, radial.x) / (2.0 * PI) + 0.5) * obj->checker_scale;
+	v = h / obj->shape.cone.height * obj->checker_scale;
 	return (pick_checker(u, v, obj));
 }
 
