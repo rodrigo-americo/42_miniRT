@@ -56,7 +56,7 @@ t_vec3	vec3_divide(t_vec3 v, double scalar)
 {
 	t_vec3	result;
 
-	if (scalar == 0)
+	if (fabs(scalar) < EPSILON)
 		return (vec3_create(0, 0, 0));
 	result.x = v.x / scalar;
 	result.y = v.y / scalar;
