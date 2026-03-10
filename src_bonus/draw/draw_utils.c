@@ -14,26 +14,10 @@
 #include "mlx_rt.h"
 #include <stdlib.h>
 
-/*
- *
- * Uma alternativa para o rand().
- *
- * Static e inline para o compilador otimizar a operação
- *
- * É static por que o valor precisa mudar a cada chamada
-*/
-
-static inline int	fast_rand(void)
+static double	rand_pixel(unsigned int *seed)
 {
-	static unsigned int	seed = 12345;
-
-	seed = 214013 * seed + 2531011;
-	return ((seed >> 16) & 0x7FFF);
-}
-
-static double	random_double(void)
-{
-	return (fast_rand() / (double ) 0x7FFF);
+	*seed = 214013 * (*seed) + 2531011;
+	return ((*seed >> 16 & 0x7FFF) / (double)0x7FFF);
 }
 
 static t_ray	pixel_ray(t_camera *cam, double x, double y, t_scene *scene)
@@ -54,18 +38,20 @@ static t_ray	pixel_ray(t_camera *cam, double x, double y, t_scene *scene)
 
 static t_vec3	calc_aa_sample(t_minirt *minirt, int x, int y)
 {
-	t_ray	ray;
-	t_color	sample_color;
-	t_vec3	sum;
-	int		i;
+	t_ray			ray;
+	t_color			sample_color;
+	t_vec3			sum;
+	int				i;
+	unsigned int	seed;
 
+	seed = (unsigned int)(y * minirt->scene.width + x) * 2654435761u;
 	sum = (t_vec3){0, 0, 0};
 	i = 0;
 	while (i < SAMPLES_PER_PIXEL)
 	{
 		ray = pixel_ray(&minirt->scene.camera,
-				x + random_double(),
-				y + random_double(),
+				x + rand_pixel(&seed) - 0.5,
+				y + rand_pixel(&seed) - 0.5,
 				&minirt->scene);
 		sample_color = ray_color(&ray, &minirt->scene);
 		sum.x += sample_color.r;

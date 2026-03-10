@@ -46,7 +46,7 @@ static void	init_tile_lst(t_minirt *minirt, t_tiles_queue *queue)
 			else
 				queue->tiles[queue->count].x_end = x + TILES_SIZE;
 			if (y + TILES_SIZE > minirt->scene.height)
-				queue->tiles[queue->count].y_start = minirt->scene.height;
+				queue->tiles[queue->count].y_end = minirt->scene.height;
 			else
 				queue->tiles[queue->count].y_end = y + TILES_SIZE;
 			queue->count++;
@@ -54,6 +54,13 @@ static void	init_tile_lst(t_minirt *minirt, t_tiles_queue *queue)
 		}
 		y += TILES_SIZE;
 	}
+}
+
+void	destroy_tiles(t_tiles_queue *queue)
+{
+	pthread_mutex_destroy(&queue->mutex);
+	free(queue->tiles);
+	queue->tiles = NULL;
 }
 
 void	init_tiles(t_minirt	*minirt)
@@ -64,6 +71,7 @@ void	init_tiles(t_minirt	*minirt)
 	queue->tiles = alloc_tiles(minirt);
 	queue->count = 0;
 	queue->idx = 0;
+	pthread_mutex_init(&queue->mutex, NULL);
 	if (!queue->tiles)
 		return ;
 	init_tile_lst(minirt, queue);

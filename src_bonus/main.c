@@ -14,8 +14,6 @@
 #include "parser.h"
 #include "scene.h"
 #include "mlx_rt.h"
-#include <stdio.h>
-#include <time.h>
 
 static bool	validate_args(int argc, char **argv)
 {
@@ -35,7 +33,7 @@ static bool	validate_args(int argc, char **argv)
 	return (true);
 }
 
-int	init_mlx(t_minirt *minirt)
+static int	init_mlx(t_minirt *minirt)
 {
 	minirt->mlx.mlx_ptr = mlx_init(WIDTH, HEIGHT, "miniRt", true);
 	if (!minirt->mlx.mlx_ptr)
@@ -44,6 +42,7 @@ int	init_mlx(t_minirt *minirt)
 	if (!minirt->mlx.img_ptr)
 		return (ft_errorinit(minirt->mlx.mlx_ptr));
 	minirt->mlx.pixels = minirt->mlx.img_ptr->pixels;
+	pthread_mutex_init(&minirt->mlx.render_mutex, NULL);
 	return (0);
 }
 
@@ -52,6 +51,13 @@ static void	helper_events(t_minirt *minirt)
 	mlx_key_hook(minirt->mlx.mlx_ptr, ft_on_keypress, minirt);
 	mlx_close_hook(minirt->mlx.mlx_ptr, ft_on_close, minirt);
 	mlx_resize_hook(minirt->mlx.mlx_ptr, ft_on_resize, minirt);
+}
+
+static void	cleanup(t_minirt *minirt)
+{
+	destroy_scene(&minirt->scene);
+	pthread_mutex_destroy(&minirt->mlx.render_mutex);
+	mlx_terminate(minirt->mlx.mlx_ptr);
 }
 
 int	main(int argc, char **argv)
@@ -69,16 +75,12 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (init_mlx(&minirt))
-	{
-		destroy_scene(&minirt.scene);
-		return (1);
-	}
+		return (destroy_scene(&minirt.scene), 1);
 	draw(&minirt);
 	if (mlx_image_to_window(minirt.mlx.mlx_ptr, minirt.mlx.img_ptr, 0, 0) == -1)
 		return (ft_errorimg(minirt.mlx.mlx_ptr, minirt.mlx.img_ptr));
 	helper_events(&minirt);
 	mlx_loop(minirt.mlx.mlx_ptr);
-	destroy_scene(&minirt.scene);
-	mlx_terminate(minirt.mlx.mlx_ptr);
+	cleanup(&minirt);
 	return (0);
 }

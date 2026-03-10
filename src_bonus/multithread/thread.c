@@ -86,8 +86,10 @@ void	*render_thread(void *arg)
 	queue = &d->minirt->mlx.tiles_queue;
 	while (1)
 	{
+		pthread_mutex_lock(&queue->mutex);
 		tile_to_render = queue->idx;
 		queue->idx++;
+		pthread_mutex_unlock(&queue->mutex);
 		if (tile_to_render >= queue->count)
 			break ;
 		render_tile(&queue->tiles[tile_to_render], d);

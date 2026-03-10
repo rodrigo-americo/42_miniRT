@@ -266,6 +266,7 @@ typedef struct	s_tiles_queue
 	int				idx;
 	int				count;
 	t_tile			*tiles;
+	pthread_mutex_t	mutex;
 }	t_tiles_queue;
 
 typedef struct s_mlx_data
@@ -278,6 +279,7 @@ typedef struct s_mlx_data
 	int				line_length;      // Bytes por linha (com padding possível)
 	int				endian;           // Ordem dos bytes (0=little, 1=big endian)
 	t_tiles_queue	tiles_queue;
+	pthread_mutex_t	render_mutex;
 }	t_mlx_data;
 
 typedef struct s_minirt
@@ -297,6 +299,7 @@ long long	get_time_us(void);
 t_color	get_heat_color(long long duration, long long max_expected_time);
 void	*render_thread(void *arg);
 void	init_tiles(t_minirt	*minirt);
+void	destroy_tiles(t_tiles_queue *queue);
 
 t_ray		ray_create(t_point3 origin, t_vec3 direction);
 void		render_scene(t_minirt *rt);

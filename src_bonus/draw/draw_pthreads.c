@@ -64,13 +64,15 @@ static void	drawing(t_minirt *minirt)
 	i = 0;
 	while (i < NUM_THREADS)
 		pthread_join(threads[i++], NULL);
-	free(minirt->mlx.tiles_queue.tiles);
+	destroy_tiles(&minirt->mlx.tiles_queue);
 }
 
 int	draw(t_minirt *minirt)
 {
+	pthread_mutex_lock(&minirt->mlx.render_mutex);
 	ft_clearimg(minirt);
 	drawing(minirt);
+	pthread_mutex_unlock(&minirt->mlx.render_mutex);
 	ft_putstr_fd("rendered!\n", 1);
 	return (0);
 }
