@@ -1,138 +1,136 @@
-# 42_miniRT
+> Ray tracer written from scratch in pure C as a [42 School](https://42.fr) project. Renders 3D scenes described in `.rt` files with realistic lighting based on the Phong model.
 
-> Ray tracer escrito do zero em C puro como projeto da [42 School](https://42.fr). Renderiza cenas 3D descritas em arquivos `.rt` com iluminação realista baseada no modelo de Phong.
-
-**Stack:** `C` · `MLX42` · `pthreads` · `CMake` · `Make`  
-**Escola:** 42 São Paulo  
-**Status:** ✅ Concluído — obrigatório + todos os itens bonus implementados
+**Stack:** `C` · `MLX42` · `pthreads` · `CMake` · `Make`
+**School:** 42 São Paulo
+**Status:** ✅ Completed — mandatory + all bonus items implemented
 
 ---
 
-<!-- Adicione aqui 2 ou 3 screenshots/gifs dos renders -->
-> 📸 _Screenshots dos renders em breve_
+<!-- Add 2 or 3 screenshots/gifs of the renders here -->
+> 📸 _Screenshots of renders coming soon_
 
 ---
 
-## O que é Ray Tracing?
+## What is Ray Tracing?
 
-Ray tracing simula o comportamento físico da luz. Para cada pixel da tela, um raio é lançado da câmera em direção à cena. Quando atinge um objeto, a cor é calculada com base em iluminação, sombras e propriedades do material.
+Ray tracing simulates the physical behavior of light. For each pixel on the screen, a ray is cast from the camera toward the scene. When it hits an object, the color is calculated based on lighting, shadows, and material properties.
 
 ```
 P(t) = origin + t * direction
 ```
 
-O objeto visível em cada pixel é o de menor `t` positivo ao longo do raio.
+The visible object at each pixel is the one with the smallest positive `t` along the ray.
 
 ---
 
-## Compilação
+## Building
 
 ```bash
-make          # versão obrigatória
-make bonus    # versão bonus
+make          # mandatory version
+make bonus    # bonus version
 make debug    # debug
 ```
 
-**Dependências:** `cmake`, `make`, `cc`, `libglfw3-dev`
+**Dependencies:** `cmake`, `make`, `cc`, `libglfw3-dev`
 
-O MLX42 é compilado automaticamente via CMake na primeira vez.
+MLX42 is compiled automatically via CMake on the first run.
 
 ---
 
-## Uso
+## Usage
 
 ```bash
 ./miniRT scenes/complex.rt
 ./miniRT_bonus scenes/bonus_full.rt
 ```
 
-- `ESC` ou fechar a janela encerra o programa
-- A janela suporta redimensionamento
+- `ESC` or closing the window exits the program
+- The window supports resizing
 
 ---
 
-## Funcionalidades
+## Features
 
-| Recurso | Obrigatório | Bonus |
+| Feature | Mandatory | Bonus |
 |---|:---:|:---:|
-| Esfera, Plano, Cilindro | ✅ | ✅ |
+| Sphere, Plane, Cylinder | ✅ | ✅ |
 | Cone | — | ✅ |
-| Iluminação de Phong (ambiente, difusa, especular) | ✅ | ✅ |
-| Sombras (shadow rays) | ✅ | ✅ |
-| Múltiplas luzes com acumulação | ✅ | ✅ |
-| Anti-aliasing MSAA | — | ✅ |
-| Reflexão recursiva | — | ✅ |
-| Propriedades de material por objeto (ks, kd, ka, shininess, reflectivity) | — | ✅ |
-| Checkerboard procedural | — | ✅ |
-| Bump mapping (procedural via seno + PNG) | — | ✅ |
-| Multi-threading com pthreads | — | ✅ |
-| Cor do céu (miss ray) | — | ✅ |
-| Janela redimensionável | ✅ | ✅ |
+| Phong Lighting (ambient, diffuse, specular) | ✅ | ✅ |
+| Shadows (shadow rays) | ✅ | ✅ |
+| Multiple lights with accumulation | ✅ | ✅ |
+| MSAA Anti-aliasing | — | ✅ |
+| Recursive Reflection | — | ✅ |
+| Per-object material properties (ks, kd, ka, shininess, reflectivity) | — | ✅ |
+| Procedural Checkerboard | — | ✅ |
+| Bump mapping (procedural via sine + PNG) | — | ✅ |
+| Multi-threading with pthreads | — | ✅ |
+| Sky color (miss ray) | — | ✅ |
+| Resizable window | ✅ | ✅ |
 
 ---
 
-## Arquitetura
+## Architecture
 
 ```
 42_miniRT/
-├── include/          Headers versão obrigatória
-├── include_bonus/    Headers versão bonus
-├── src/              Código fonte obrigatório (28 arquivos)
-├── src_bonus/        Código fonte bonus (43 arquivos)
-├── scenes/           Arquivos .rt de exemplo e teste
-├── libft/            Biblioteca C customizada
-└── MLX42/            Biblioteca gráfica (submodule)
+├── include/          Mandatory version headers
+├── include_bonus/    Bonus version headers
+├── src/              Mandatory source code (28 files)
+├── src_bonus/        Bonus source code (43 files)
+├── scenes/           Sample and test .rt files
+├── libft/            Custom C library
+└── MLX42/            Graphics library (submodule)
 ```
 
-### Módulos principais (`src/`)
+### Main modules (`src/`)
 
-- **`parser/`** — Lê e valida o arquivo `.rt` com tabela de lookup (`g_element_parsers[]`). Garante exatamente 1 câmera e 1 luz ambiente, com tratamento de erros em cada etapa.
-- **`intersect/`** — Interseção raio-objeto para esfera (equação quadrática), plano (produto escalar) e cilindro (corpo + tampas).
-- **`lighting/`** — Modelo de Phong: componentes ambiente, difusa e especular. Shadow rays para cada luz.
-- **`vectors/`** — Biblioteca de vetores 3D: soma, subtração, escalar, produto vetorial, normalização.
-- **`draw/`** — Loop de renderização pixel a pixel.
-- **`color/`** — Operações com `t_color` (RGBA): adição, escala, clamp, conversão para `uint32_t`.
+- **`parser/`** — Reads and validates the `.rt` file using a lookup table (`g_element_parsers[]`). Ensures exactly 1 camera and 1 ambient light, with error handling at each step.
+- **`intersect/`** — Ray-object intersection for sphere (quadratic equation), plane (dot product), and cylinder (body + caps).
+- **`lighting/`** — Phong model: ambient, diffuse, and specular components. Shadow rays for each light.
+- **`vectors/`** — 3D vector library: addition, subtraction, scalar, cross product, normalization.
+- **`draw/`** — Pixel-by-pixel rendering loop.
+- **`color/`** — Operations on `t_color` (RGBA): addition, scaling, clamping, conversion to `uint32_t`.
 
-### Extras do bonus (`src_bonus/`)
+### Bonus extras (`src_bonus/`)
 
-- **`draw/draw_pthreads.c`** — renderização paralela com pthreads
-- **`multithread/`** — workers de thread, gerenciamento da fila de tiles e debug
-- **`draw/draw_utils.c`** — supersampling MSAA com média de cor
-- **`intersect/hit_cone.c`** — interseção raio-cone com equação quadrática e verificação de altura
-- **`intersect/checkerboard.c`** — padrão de tabuleiro de xadrez procedural em todos os objetos
-- **`intersect/bump_mapping.c`** — perturbação da normal via textura procedural (seno) ou PNG
-- **`intersect/bump_shapes.c`** — cálculo de tangente/bitangente por tipo de objeto
-- **`parser/parser_cone.c`** — parse de objetos `cn` no arquivo `.rt`
-- **`scene/object_extra_args.c`** — parâmetros extras de material: `ks`, `kd`, `ka`, `shininess`, `reflectivity`
-- **`scene/object_defaults.c`** — aplica valores padrão de material quando omitidos
-- **`scene/object_bump.c`** — carrega textura de bump map (PNG) via MLX42
-- **`lighting/lighting_reflect.c`** — reflexão recursiva
+- **`draw/draw_pthreads.c`** — Parallel rendering with pthreads
+- **`multithread/`** — Thread workers, tile queue management and debug
+- **`draw/draw_utils.c`** — MSAA supersampling with color averaging
+- **`intersect/hit_cone.c`** — Ray-cone intersection with quadratic equation and height check
+- **`intersect/checkerboard.c`** — Procedural checkerboard pattern on all objects
+- **`intersect/bump_mapping.c`** — Normal perturbation via procedural texture (sine) or PNG
+- **`intersect/bump_shapes.c`** — Tangent/bitangent calculation per object type
+- **`parser/parser_cone.c`** — Parsing of `cn` objects in the `.rt` file
+- **`scene/object_extra_args.c`** — Extra material parameters: `ks`, `kd`, `ka`, `shininess`, `reflectivity`
+- **`scene/object_defaults.c`** — Applies default material values when omitted
+- **`scene/object_bump.c`** — Loads bump map texture (PNG) via MLX42
+- **`lighting/lighting_reflect.c`** — Recursive reflection
 
 ---
 
-## Formato das Cenas (`.rt`)
+## Scene Format (`.rt`)
 
-### Elementos globais (exatamente 1 de cada)
-
-```
-A <intensidade> <R,G,B>          # Luz ambiente
-C <x,y,z> <dx,dy,dz> <fov>      # Câmera
-L <x,y,z> <brilho> <R,G,B>      # Luz pontual (pode ter múltiplas)
-```
-
-### Objetos
+### Global elements (exactly 1 of each)
 
 ```
-sp <x,y,z> <diâmetro> <R,G,B>
+A <intensity> <R,G,B>          # Ambient light
+C <x,y,z> <dx,dy,dz> <fov>    # Camera
+L <x,y,z> <brightness> <R,G,B> # Point light (multiple allowed)
+```
+
+### Objects
+
+```
+sp <x,y,z> <diameter> <R,G,B>
 pl <x,y,z> <nx,ny,nz> <R,G,B>
-cy <x,y,z> <ax,ay,az> <diâmetro> <altura> <R,G,B>
-cn <x,y,z> <ax,ay,az> <diâmetro> <altura> <R,G,B>   # bonus
+cy <x,y,z> <ax,ay,az> <diameter> <height> <R,G,B>
+cn <x,y,z> <ax,ay,az> <diameter> <height> <R,G,B>   # bonus
 ```
 
-### Parâmetros de material (bonus, opcionais)
+### Material parameters (bonus, optional)
 
 ```bash
-# Apenas Phong
+# Phong only
 sp ... <R,G,B> <ks> <kd> <ka> <shininess> <reflectivity>
 
 # Phong + checkerboard
@@ -140,12 +138,12 @@ sp ... <R,G,B> <ks> <kd> <ka> <shininess> <reflectivity> <R2,G2,B2> <checker_sca
 
 # Phong + checkerboard + bump mapping
 sp ... <R,G,B> <ks> <kd> <ka> <shininess> <reflectivity> <R2,G2,B2> <checker_scale> <bump_scale> <bump_path>
-# Use "none" como bump_path para bump procedural (seno)
+# Use "none" as bump_path for procedural bump (sine)
 ```
 
-Defaults quando omitidos: `KA=0.2` · `KD=0.7` · `KS=0.2` · `SHININESS=30` · `REFLECTIVITY=0`
+Defaults when omitted: `KA=0.2` · `KD=0.7` · `KS=0.2` · `SHININESS=30` · `REFLECTIVITY=0`
 
-### Exemplo de cena
+### Scene example
 
 ```
 A 0.3 255,255,255
@@ -157,21 +155,21 @@ pl 0,-3,0 0,1,0 200,200,200
 cy 0,-3,2 0,1,0 2.0 6.0 255,128,0
 ```
 
-### Validações
+### Validations
 
-- Exatamente 1 câmera (`C`) e 1 luz ambiente (`A`) por arquivo
-- Extensão `.rt` obrigatória
-- Intensidades e brilho: `[0.0, 1.0]`
-- Cores RGB: `[0, 255]`
-- Vetores de orientação: componentes em `[-1.0, 1.0]`
+- Exactly 1 camera (`C`) and 1 ambient light (`A`) per file
+- `.rt` extension required
+- Intensities and brightness: `[0.0, 1.0]`
+- RGB colors: `[0, 255]`
+- Orientation vectors: components in `[-1.0, 1.0]`
 - FOV: `[0, 180]`
-- Diâmetro e altura: valores positivos
+- Diameter and height: positive values
 
 ---
 
-## Autores
+## Authors
 
-| Colaborador | Contribuições principais |
+| Contributor | Main contributions |
 |---|---|
-| **rgregori** ([@rodrigo-americo](https://github.com/rodrigo-americo)) | Parser completo, lighting, cálculos geométricos, itens bonus (cone, MSAA, reflexão, bump mapping, checkerboard, materiais) |
-| **tlavared** ([@Talen400](https://github.com/Talen400)) | Cálculos geométricos,  multi-threading com pthreads, estrutura geral |
+| **rgregori** ([@rodrigo-americo](https://github.com/rodrigo-americo)) | Full parser, lighting, geometric calculations, bonus items (cone, MSAA, reflection, bump mapping, checkerboard, materials) |
+| **tlavared** ([@Talen400](https://github.com/Talen400)) | Geometric calculations, multi-threading with pthreads, overall structure |
