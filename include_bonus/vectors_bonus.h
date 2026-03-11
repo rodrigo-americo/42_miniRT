@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vectors.h                                          :+:      :+:    :+:   */
+/*   vectors_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgregori <rgregori@student.42sp.org.br>    #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026-03-04 16:31:59 by rgregori          #+#    #+#             */
-/*   Updated: 2026-03-04 16:31:59 by rgregori         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:50:52 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTORS_H
-# define VECTORS_H
+#ifndef VECTORS_BONUS_H
+# define VECTORS_BONUS_H
 
 typedef struct s_vec3
 {

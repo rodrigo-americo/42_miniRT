@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersect.h                                        :+:      :+:    :+:   */
+/*   intersect_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgregori <rgregori@student.42sp.org.br>    #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026-01-29 15:07:34 by rgregori          #+#    #+#             */
-/*   Updated: 2026/03/04 18:20:39 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:49:54 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INTERSECT_H
-# define INTERSECT_H
+#ifndef INTERSECT_BONUS_H
+# define INTERSECT_BONUS_H
 
 # include "miniRt_bonus.h"
 

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   miniRt.h                                           :+:      :+:    :+:   */
+/*   miniRt_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: student <student@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 00:00:00 by student           #+#    #+#             */
-/*   Updated: 2026/03/09 18:01:02 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:51:59 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef MINIRT_BONUS_H
+# define MINIRT_BONUS_H
 
 /* ========================================================================== */
 /*                               BIBLIOTECAS                                  */
@@ -279,5 +279,5 @@ void		ft_on_close(void *param);
 void		ft_on_keypress(mlx_key_data_t keydata, void *param);
 void		ft_on_resize(int32_t width, int32_t height, void *param);
 t_color		sky_color(t_ray *r);
-#endif
 
+#endif

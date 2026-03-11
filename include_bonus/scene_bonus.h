@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.h                                            :+:      :+:    :+:   */
+/*   scene_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgregori <rgregori@student.42sp.org.br>    #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026-03-04 16:31:21 by rgregori          #+#    #+#             */
-/*   Updated: 2026-03-04 16:31:21 by rgregori         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:50:43 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCENE_H
-# define SCENE_H
+#ifndef SCENE_BONUS_H
+# define SCENE_BONUS_H
 
 # include "miniRt_bonus.h"
 

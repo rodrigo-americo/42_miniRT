@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/color.h"
+#include "color_bonus.h"
 #include "miniRt_bonus.h"
 
 t_color	init_color(uint32_t color)

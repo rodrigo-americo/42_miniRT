@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/color.h"
+#include "color_bonus.h"
 #include "miniRt_bonus.h"
 
 static uint8_t	clamp_channel(int value)

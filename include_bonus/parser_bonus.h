@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parser_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: student <student@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 00:00:00 by student           #+#    #+#             */
-/*   Updated: 2026/02/02 00:00:00 by student          ###   ########.fr       */
+/*   Updated: 2026/03/11 13:50:35 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef PARSER_BONUS_H
+# define PARSER_BONUS_H
 
 # include "miniRt_bonus.h"
 # include "scene_bonus.h"
