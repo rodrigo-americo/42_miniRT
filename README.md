@@ -4,6 +4,10 @@
 
 > A ray tracer written from scratch in pure C, rendering 3D scenes with realistic Phong lighting.
 
+| | |
+|---|---|
+| ![bonus_full](images/bonus_full.webp) | ![praia](images/praia.webp) |
+
 ---
 
 ## Description
@@ -175,6 +179,7 @@ cy 0,-3,2 0,1,0 2.0 6.0 255,128,0
 │   ├── lighting/     + recursive reflection
 │   ├── multithread/  Thread workers & tile queue
 │   └── scene/        Material params, defaults, bump loading
+├── images/           Rendered output samples
 ├── scenes/           Sample and test .rt files
 ├── libft/            Custom C library
 └── MLX42/            Graphics library (submodule)
